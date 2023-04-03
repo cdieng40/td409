@@ -1,2 +1,5 @@
+[servs]
+DebianTermFB ansible_host=192.168.103.230
+
 [routeurs]
 csr1000 ansible_host=192.168.103.211
