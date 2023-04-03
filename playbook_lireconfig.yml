@@ -8,3 +8,17 @@
       register: config
     - name: Enregistre la configuration
       copy:
+
+- name: Installer serveur web
+  hosts: DebianTermFB
+  gather_facts:false
+  become : yes
+  apt:
+    - name: apache
+      state: present
+    - name: activer et demarrer le service
+      systemtd: 
+        name: apache
+        state: started
+        enabled: true
+        

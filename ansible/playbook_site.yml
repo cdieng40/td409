@@ -1,0 +1,19 @@
+---
+- name: Mettre à jour le cache apt et installer Apache
+  apt:
+    name: apache2
+    update_cache: yes
+    state: present
+
+- name: Copier le répertoire site_web/
+  copy:
+    src: site_web/
+    dest: /var/www/html/
+    owner: www-data
+    mode: '0600'
+
+- name: Redémarrer le service Apache
+  systemd:
+    name: apache2
+    state: restarted
+    enabled: yes
