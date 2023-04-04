@@ -1,0 +1,21 @@
+---
+- name: Configurer le serveur DHCP sur le routeur CSR
+  hosts: csr
+  gather_facts: no
+  connection: network_cli
+  vars:
+    dhcp_pool_name: serveur_pool
+    network_address: 192.168.103.0
+    netmask: 255.255.255.0
+    dns_server: 8.8.8.8
+    default_gateway: 192.168.103.246
+  tasks:
+    - name: Configurer le pool DHCP
+      ios_config:
+        lines:
+          - "ip dhcp excluded-address 192.168.103.246"
+          - "ip dhcp pool {{ dhcp_pool_name }}"
+          - "network {{ network_address }} {{ netmask }}"
+          - "dns-server {{ dns_server }}"
+          - "default-router {{ default_gateway }}"
+      parent: global
