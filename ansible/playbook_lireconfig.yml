@@ -1,0 +1,24 @@
+- name: Acte 1 - essai csr1000
+  hosts: csr1000
+  gather_facts: false
+  tasks:
+    - name: Récupère la configuration
+      cisco.ios.ios_command:
+         commands: show running config
+      register: config
+    - name: Enregistre la configuration
+      copy:
+
+- name: Installer serveur web
+  hosts: DebianTermFB
+  gather_facts:false
+  become : yes
+  apt:
+    - name: apache
+      state: present
+    - name: activer et demarrer le service
+      systemtd: 
+        name: apache
+        state: started
+        enabled: true
+        

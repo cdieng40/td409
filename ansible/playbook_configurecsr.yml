@@ -1,0 +1,41 @@
+---
+- name: Configurer interfaces CSR
+  hosts: csr1000
+  gather_facts: no
+  connection: network_cli
+  tasks:
+    - name: Configurer l'interface Gigabit 1 avec DHCP
+      ios_config:
+        lines:
+          - interface GigabitEthernet1
+          - description Interface DHCP
+          - ip address dhcp
+          - no shutdown
+        parents: interface GigabitEthernet1
+
+    - name: Configurer l'interface Gigabit 2
+      ios_config:
+        lines:
+          - interface GigabitEthernet2
+          - description Interface LAN 2
+          - ip address 192.168.2.1 255.255.255.0
+          - no shutdown
+        parents: interface GigabitEthernet2
+
+    - name: Configurer l'interface Gigabit 3
+      ios_config:
+        lines:
+          - interface GigabitEthernet3
+          - description Interface LAN 3
+          - ip address 192.168.3.1 255.255.255.0
+          - no shutdown
+        parents: interface GigabitEthernet3
+
+    - name: Configurer l'interface Gigabit 4
+      ios_config:
+        lines:
+          - interface GigabitEthernet4
+          - description Interface LAN 4
+          - ip address 192.168.4.1 255.255.255.0
+          - no shutdown
+        parents: interface GigabitEthernet4

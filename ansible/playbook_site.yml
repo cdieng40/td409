@@ -1,19 +1,26 @@
 ---
-- name: Mettre à jour le cache apt et installer Apache
-  apt:
-    name: apache2
-    update_cache: yes
-    state: present
+- name: Acte Site Web
+  hosts: DebianTermFB
+  gather_facts: false
+  become: yes
+  
+  tasks:
 
-- name: Copier le répertoire site_web/
-  copy:
-    src: site_web/
-    dest: /var/www/html/
-    owner: www-data
-    mode: '0600'
+    - name: Mettre à jour le cache apt et installer Apache
+      apt:
+         name: apache2
+         update_cache: yes
+         state: present
 
-- name: Redémarrer le service Apache
-  systemd:
-    name: apache2
-    state: restarted
-    enabled: yes
+    - name: Copier le répertoire site_web/
+      copy:
+         src: site_web/
+         dest: /var/www/html/
+         owner: www-data
+         mode: '0600'
+
+    - name: Redémarrer le service Apache
+      systemd:
+         name: apache2
+         state: restarted
+         enabled: yes
