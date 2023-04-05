@@ -1,0 +1,40 @@
+
+---
+
+- name: Configuration du NAT dynamique
+  hosts: csr1000
+  gather_facts: no
+
+  tasks:
+    - name: Placer la commande ip nat outside sur l'interface WAN
+      ios_config:
+        parents: interface GigabitEthernet1
+        lines:
+          - ip nat outside
+
+    - name: Placer la commande ip nat inside sur les interfaces LAN
+      ios_config:
+        lines:
+#          - "interface {{ item }}"
+          - "ip nat inside"
+        parents: "interface {{ item }}"
+      loop:
+        - GigabitEthernet2
+        - GigabitEthernet3
+        - GigabitEthernet4    
+
+    - name: Configurer l'ACL pour autoriser le trafic du réseau LAN
+      ios_config:
+        lines:
+          - access-list 1 permit 192.168.103.0 0.0.0.255
+
+    - name: Activer le NAT dynamique sur l'interface WAN avec l'ACL
+      ios_config:
+        lines:
+          - ip nat inside source list 1 interface GigabitEthernet1 overload
+    - name: Exécuter une commande show sur le périphérique réseau
+      ios_command:
+       commands:
+         - show version
+      timeout: 60
+

@@ -1,0 +1,26 @@
+---
+
+- name: Configurer NAT dynamique
+  ios_config:
+    parents:
+      - interface "{{ item }}"
+    lines:
+      - ip nat inside
+  loop:
+    - GigabitEthernet2
+    - GigabitEthernet3
+    - GigabitEthernet4
+
+- name: Configurer ACL pour NAT dynamique
+  ios_config:
+    lines:
+      - access-list 10 permit 192.168.103.0 0.0.0.255
+  register: acl_result
+
+- name: Configurer NAT dynamique avec ACL
+  ios_config:
+    parents:
+      - global
+    lines:
+      - ip nat inside source list 10 interface GigabitEthernet1 overload
+  when: acl_result.change

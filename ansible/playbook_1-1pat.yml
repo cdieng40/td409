@@ -1,0 +1,12 @@
+---
+
+- name: Configuration du NAT dynamique
+  hosts: csr1000
+  gather_facts: no
+
+  tasks:
+    - name: Placer la commande ip nat outside sur l'interface WAN
+      ios_config:
+        parents: interface GigabitEthernet1
+        lines:
+          - ip nat outside

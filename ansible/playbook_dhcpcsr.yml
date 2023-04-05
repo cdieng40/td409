@@ -1,8 +1,7 @@
 ---
 - name: Configurer le serveur DHCP sur le routeur CSR
-  hosts: csr
+  hosts: csr1000
   gather_facts: no
-  connection: network_cli
   vars:
     dhcp_pool_name: serveur_pool
     network_address: 192.168.103.0
@@ -18,4 +17,4 @@
           - "network {{ network_address }} {{ netmask }}"
           - "dns-server {{ dns_server }}"
           - "default-router {{ default_gateway }}"
-      parent: global
+     
